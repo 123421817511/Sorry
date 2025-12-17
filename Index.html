@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hey…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ffd6e8, #ffeef5);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .box {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 340px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  h2, h3 {
+    color: #ff4d6d;
+  }
+
+  button {
+    margin: 12px;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .yes {
+    background: #ff4d6d;
+    color: white;
+  }
+
+  .no {
+    background: #4caf50;
+    color: white;
+  }
+
+  .heart {
+    position: absolute;
+    color: #ff4d6d;
+    font-size: 20px;
+    animation: float 6s linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(100vh);
+      opacity: 0;
+    }
+    50% { opacity: 1; }
+    100% {
+      transform: translateY(-10vh);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="box" id="content">
+  <h2>Hey… are you still angry?</h2>
+  <button class="yes" onclick="angry(); moveButton(this)">Yes</button>
+  <button class="no" onclick="notAngry()">No</button>
+</div>
+
+<script>
+  function angry() {
+    document.getElementById("content").innerHTML = `
+      <h3>Please forgive me… I’m really sorry 🥺</h3>
+      <p>Are you still angry?</p>
+      <button class="yes" onclick="stillAngry(); moveButton(this)">Yes</button>
+      <button class="no" onclick="notAngry()">No</button>
+    `;
+  }
+
+  function stillAngry() {
+    document.getElementById("content").innerHTML = `
+      <h3>Please don’t be angry 😔</h3>
+      <p>I really care about you.</p>
+      <button class="yes" onclick="finalSorry(); moveButton(this)">Still angry</button>
+      <button class="no" onclick="notAngry()">I’m not angry</button>
+    `;
+  }
+
+  function finalSorry() {
+    document.getElementById("content").innerHTML = `
+      <h2>I’m really, really sorry 💔</h2>
+      <p>Please forgive me…</p>
+    `;
+  }
+
+  function notAngry() {
+    document.getElementById("content").innerHTML = `
+      <h2>Thankkk youuu 🥹❤️</h2>
+      <p>I’m really sorry and I promise to do better.</p>
+    `;
+  }
+
+  function moveButton(btn) {
+    const maxX = 40;
+    const maxY = 30;
+    const x = Math.random() * maxX * 2 - maxX;
+    const y = Math.random() * maxY * 2 - maxY;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+  }, 600);
+</script>
+
+</body>
+  </html>
