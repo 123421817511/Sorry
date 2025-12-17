@@ -100,7 +100,7 @@
     <div class="message" id="message"></div>
     <div id="buttons">
         <button class="angry" onclick="handleAnger(true)">Yes 😡</button>
-        <button class="not-angry" onclick="handleAnger(false)">No 😅</button>
+        <button class="not-angry" onclick="handleAnger(false)">No 😋</button>
     </div>
 </div>
 
@@ -119,11 +119,11 @@ function handleAnger(isAngry) {
             message.innerHTML = "I'm really sorry 😔💔 Please forgive me!";
             buttonsDiv.innerHTML = `
                 <button class="angry" onclick="nextStep(true)">Are you still angry? 😢</button>
-                <button class="not-angry" onclick="nextStep(false)">No, I'm not 😅</button>
+                <button class="not-angry" onclick="nextStep(false)">No, I'm not 😋</button>
             `;
             shakeButton();
         } else {
-            message.innerHTML = "Yayyy! 😍 Thanks for not being angry!";
+            message.innerHTML = "Yayyy! 😍 Thanks maan jaane keliye!";
             buttonsDiv.innerHTML = `
                 <button class="not-angry" onclick="finalStep()">Okay 😄</button>
             `;
@@ -139,11 +139,11 @@ function nextStep(isAngry) {
         message.innerHTML = "Yaar kavyaa sorryy naa itni si choti baat mein naraz nai hote itnaa 😔🖐🏻 Sorryyyy naa!";
         buttonsDiv.innerHTML = `
             <button class="angry" onclick="handleStillAngry(true)">I'm still angry 😡</button>
-            <button class="not-angry" onclick="handleStillAngry(false)">Awww I'm not now 😅</button>
+            <button class="not-angry" onclick="handleStillAngry(false)">Awww I'm not now 😋</button>
         `;
         shakeButton();
     } else {
-        message.innerHTML = "Awwww 😄 glad you're not angry!";
+        message.innerHTML = "Awwww 😄 glad you're not angry eheheehe thankkss!";
         buttonsDiv.innerHTML = `
             <button class="not-angry" onclick="finalStep()">Okay 😍</button>
         `;
@@ -155,7 +155,7 @@ function handleStillAngry(isAngry) {
     const buttonsDiv = document.getElementById('buttons');
 
     if(isAngry) {
-        message.innerHTML = "Yaar kavyaa sorryy naa itni si choti baat mein naraz nai hote itnaa 😔🖐🏻 Sorryyyy naa dekh tere liye mene 😅";
+        message.innerHTML = "Yaar kavyaa sorryy naa itni si choti baat toh hai 😔🖐🏻 Sorryyyy naa dekhle itna aache se mna rha terko 😔";
         buttonsDiv.innerHTML = `
             <button class="not-angry" onclick="handleClicks()">Awww okayyy, I'm not angry anymore 😄</button>
         `;
