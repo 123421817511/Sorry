@@ -3,37 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apology Fun</title>
+<title>Make Kavya Not Angry 😅</title>
 <style>
   body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+    font-family: 'Comic Sans MS', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    margin: 0;
   }
 
-  #container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px;
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
     border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    max-width: 400px;
-    animation: fadeIn 1s ease-in;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
   }
 
-  #message {
-    font-size: 18px;
+  h2 {
+    font-size: 24px;
     margin-bottom: 20px;
-    min-height: 60px;
+    animation: fadeIn 1s ease;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease;
   }
 
   button {
-    background: #ff6f61;
+    background: #ff6f91;
     color: white;
     border: none;
     padding: 12px 25px;
@@ -41,153 +48,132 @@
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
-    transition: all 0.3s;
+    transition: transform 0.2s, background 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
   }
 
   button:hover {
     transform: scale(1.1);
-    background: #ff3b2e;
+    background: #ff4a6f;
+  }
+
+  button:active {
+    transform: scale(0.95);
   }
 
   @keyframes fadeIn {
-    from {opacity: 0; transform: translateY(-20px);}
-    to {opacity: 1; transform: translateY(0);}
+    0% {opacity: 0; transform: translateY(-10px);}
+    100% {opacity: 1; transform: translateY(0);}
   }
 
-  /* Confetti canvas */
-  #confetti-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+  .confetti {
+    position: absolute;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     pointer-events: none;
-    z-index: 999;
   }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ffec6a;
+    opacity: 0.8;
+    transform: rotate(45deg);
+    animation: fall 3s linear infinite;
+  }
+
+  @keyframes fall {
+    0% {transform: translateY(0) rotate(0deg);}
+    100% {transform: translateY(500px) rotate(360deg);}
+  }
+
 </style>
 </head>
 <body>
-
-<canvas id="confetti-canvas"></canvas>
-<div id="container">
-  <div id="message">Hey, are you still angry? 😟</div>
-  <button onclick="responseNo()">No</button>
-  <button onclick="responseYes()">Yes</button>
+<div class="container" id="content">
+  <h2>Heyy 😅</h2>
+  <p>Are you still angry? 😬</p>
+  <button onclick="angryNo()">Noo 😇</button>
+  <button onclick="angryYes()">Yes 😔</button>
 </div>
 
 <script>
 let clickCount = 0;
 
-function responseNo() {
-  document.getElementById('message').innerHTML = "Yayyy! Thank you for not being angry 😄💖";
-  showNextButtons("Are you still angry? 🤔", ["No, I'm not", "Still angry"]);
+function angryNo() {
+  document.getElementById("content").innerHTML = `
+    <h2>Yayyy 😄</h2>
+    <p>Thanks for not being angry 😇💖</p>
+  `;
 }
 
-function responseYes() {
-  document.getElementById('message').innerHTML = "Yaarrr Kavya, I'm really sorry 😔💔";
-  showNextButtons("Are you still angry? 😢", ["No, I'm not", "Still angry"]);
+function angryYes() {
+  document.getElementById("content").innerHTML = `
+    <h2>Yaarrr 😢</h2>
+    <p>Kavya I'm really sorry 🥺💔</p>
+    <button onclick="stillAngry1()">Are you still angry? 😔</button>
+    <button onclick="notAngry1()">Noo I'm not 😇</button>
+  `;
 }
 
-function showNextButtons(msg, options) {
-  const container = document.getElementById('container');
-  container.innerHTML = `<div id="message">${msg}</div>`;
-  options.forEach((opt, index) => {
-    const btn = document.createElement('button');
-    btn.innerText = opt;
-    if (opt.toLowerCase().includes("still angry")) {
-      btn.onclick = angryAgain;
-    } else if (opt.toLowerCase().includes("no")) {
-      btn.onclick = notAngryYet;
-    }
-    container.appendChild(btn);
-  });
+function stillAngry1() {
+  document.getElementById("content").innerHTML = `
+    <h2>Ohhh 😭</h2>
+    <p>Esaaa mat karr yaarrr man jaa 😔🙏</p>
+    <button onclick="stillAngry2()">I'm still angry 😔</button>
+    <button onclick="notAngry2()">Aww I'm not now 😇</button>
+  `;
 }
 
-function angryAgain() {
-  document.getElementById('message').innerHTML = "Esaaa mat karr yaarrr, man jaa 😔💖";
-  showNextButtons("Choose wisely 😅", ["I'm still angry", "Aww I'm not now"]);
+function notAngry1() {
+  document.getElementById("content").innerHTML = `
+    <h2>Yayy 😄</h2>
+    <p>Thanks for forgiving 💖</p>
+  `;
 }
 
-function notAngryYet() {
-  clickCount = 0;
-  document.getElementById('message').innerHTML = "Yaar Kavyaa, sorry naa 😔🖐🏻 Choti baat mein naraz nai hote, dekh tere liye HTML bhi kiya, yaawrr maann jaaa 💖";
-  const container = document.getElementById('container');
-  container.innerHTML += `<button id="final-btn">Awww okayyy, I'm not angry anymore 😄</button>`;
-  const finalBtn = document.getElementById('final-btn');
-  finalBtn.onclick = () => {
-    clickCount++;
-    if (clickCount >= 5) {
-      document.getElementById('message').innerHTML = "Ehehehehee thankk youu maan jaane keliye 😄🎉";
-      finalBtn.style.display = "none";
-      launchConfetti();
-    }
-  };
+function stillAngry2() {
+  document.getElementById("content").innerHTML = `
+    <h2>Yaar 😢</h2>
+    <p>Kavyaa sorryy naa itni si choti baat mein naraz nai hote itnaa 😔🖐🏻 sorryyyy naaa dekh tere liye mene html bhi kiya esa mat kar yaawrr maann jaaa</p>
+    <button id="finalBtn" onclick="finalClick()">Awww okayyyy I'm not angry anymore 😇</button>
+  `;
 }
 
-function launchConfetti() {
-  const confetti = new ConfettiGenerator({ target: 'confetti-canvas', max: 150, size: 1 });
-  confetti.render();
-  setTimeout(() => confetti.clear(), 5000);
+function notAngry2() {
+  document.getElementById("content").innerHTML = `
+    <h2>Yayy 😄</h2>
+    <p>Thanks for forgiving 💖</p>
+  `;
 }
 
-// Confetti library code
-class ConfettiGenerator {
-  constructor({target, max=100, size=1}) {
-    this.canvas = document.getElementById(target);
-    this.ctx = this.canvas.getContext("2d");
-    this.max = max;
-    this.size = size;
-    this.particles = [];
-    this.running = false;
-    this.init();
+function finalClick() {
+  clickCount++;
+  if(clickCount >= 5){
+    document.getElementById("content").innerHTML = `
+      <h2>🎉 Ehehehehee 😄</h2>
+      <p>Thankk youu maan jaane keliye 💖🥳</p>
+      <div class="confetti" id="confetti"></div>
+    `;
+    createConfetti();
   }
-  init() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-    for(let i=0;i<this.max;i++){
-      this.particles.push({
-        x: Math.random()*this.canvas.width,
-        y: Math.random()*this.canvas.height- this.canvas.height,
-        r: Math.random()*4*this.size + 1,
-        d: Math.random()*this.max,
-        color: `hsl(${Math.random()*360},100%,50%)`,
-        tilt: Math.random()*10 - 10,
-        tiltAngleIncremental: Math.random()*0.07 + 0.05,
-        tiltAngle:0
-      });
-    }
-    this.running = true;
-    this.draw();
-  }
-  draw() {
-    if(!this.running) return;
-    this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-    this.particles.forEach(p=>{
-      this.ctx.beginPath();
-      this.ctx.lineWidth = p.r;
-      this.ctx.strokeStyle = p.color;
-      this.ctx.moveTo(p.x + p.tilt + p.r/2, p.y);
-      this.ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r/2);
-      this.ctx.stroke();
-    });
-    this.update();
-    requestAnimationFrame(()=>this.draw());
-  }
-  update() {
-    this.particles.forEach((p,i)=>{
-      p.tiltAngle += p.tiltAngleIncremental;
-      p.y += (Math.cos(p.d) + 3 + p.r/2)/2;
-      p.x += Math.sin(p.d);
-      p.tilt = Math.sin(p.tiltAngle) * 15;
-      if(p.y > this.canvas.height) {
-        p.y = -10;
-        p.x = Math.random()*this.canvas.width;
-      }
-    });
-  }
-  clear() { this.running=false; this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);}
 }
 
+function createConfetti() {
+  const confettiContainer = document.getElementById("confetti");
+  for(let i=0; i<100; i++){
+    const confetti = document.createElement('div');
+    confetti.classList.add('confetti-piece');
+    confetti.style.left = Math.random()*100 + '%';
+    confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+    confetti.style.animationDuration = 2 + Math.random()*3 + 's';
+    confetti.style.width = confetti.style.height = 5 + Math.random()*10 + 'px';
+    confettiContainer.appendChild(confetti);
+  }
+}
 </script>
 </body>
 </html>
