@@ -1,179 +1,149 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Make Kavya Not Angry 😅</title>
-<style>
-  body {
-    font-family: 'Comic Sans MS', sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<title>Hey You…</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <style>  
+  body {  
+    font-family: 'Segoe UI', sans-serif;  
+    background: linear-gradient(135deg, #ffd1dc, #fff0f5);  
+    height: 100vh;  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+    overflow: hidden;  
+  }  
+  
+  .box {  
+    background: white;  
+    padding: 28px;  
+    border-radius: 20px;  
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);  
+    width: 90%;  
+    max-width: 360px;  
+    text-align: center;  
+    z-index: 2;  
+  }  
+  
+  h2, h3 {  
+    color: #ff4d6d;  
+  }  
+  
+  p {  
+    color: #444;  
+    font-size: 15px;  
+  }  
+  
+  button {  
+    margin: 12px;  
+    padding: 14px 26px;  
+    border: none;  
+    border-radius: 30px;  
+    font-size: 16px;  
+    cursor: pointer;  
+  }  
+  
+  .yes {  
+    background: #ff4d6d;  
+    color: white;  
+  }  
+  
+  .no {  
+    background: #4caf50;  
+    color: white;  
+  }  
+  
+  .heart {  
+    position: absolute;  
+    font-size: 18px;  
+    animation: float 6s linear infinite;  
+    opacity: 0.7;  
+  }  
+  
+  @keyframes float {  
+    0% { transform: translateY(100vh); opacity: 0; }  
+    50% { opacity: 1; }  
+    100% { transform: translateY(-10vh); opacity: 0; }  
+  }  
+</style>  </head>  <body>  <div class="box" id="content">  
+  <h2>Heyyy 🥺💗</h2>  
+  <p>Are you still angry with me? 😔</p>  <button class="yes"  
+ontouchstart="moveButton(this)"  
+onmouseover="moveButton(this)"  
+onclick="angry()">
+Yes 😠
+</button>
 
-  .container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    position: relative;
-  }
-
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    animation: fadeIn 1s ease;
-  }
-
-  p {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    animation: fadeIn 1s ease;
-  }
-
-  button {
-    background: #ff6f91;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    margin: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.2s, background 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  }
-
-  button:hover {
-    transform: scale(1.1);
-    background: #ff4a6f;
-  }
-
-  button:active {
-    transform: scale(0.95);
-  }
-
-  @keyframes fadeIn {
-    0% {opacity: 0; transform: translateY(-10px);}
-    100% {opacity: 1; transform: translateY(0);}
-  }
-
-  .confetti {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-  }
-
-  .confetti-piece {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: #ffec6a;
-    opacity: 0.8;
-    transform: rotate(45deg);
-    animation: fall 3s linear infinite;
-  }
-
-  @keyframes fall {
-    0% {transform: translateY(0) rotate(0deg);}
-    100% {transform: translateY(500px) rotate(360deg);}
-  }
-
-</style>
-</head>
-<body>
-<div class="container" id="content">
-  <h2>Heyy 😅</h2>
-  <p>Are you still angry? 😬</p>
-  <button onclick="angryNo()">Noo 😇</button>
-  <button onclick="angryYes()">Yes 😔</button>
-</div>
-
-<script>
-let clickCount = 0;
-
-function angryNo() {
-  document.getElementById("content").innerHTML = `
-    <h2>Yayyy 😄</h2>
-    <p>Thanks for not being angry 😇💖</p>
-  `;
-}
-
-function angryYes() {
-  document.getElementById("content").innerHTML = `
-    <h2>Yaarrr 😢</h2>
-    <p>Kavya I'm really sorry 🥺💔</p>
-    <button onclick="stillAngry1()">Are you still angry? 😔</button>
-    <button onclick="notAngry1()">Noo I'm not 😇</button>
-  `;
-}
-
-function stillAngry1() {
-  document.getElementById("content").innerHTML = `
-    <h2>Ohhh 😭</h2>
-    <p>Esaaa mat karr yaarrr man jaa 😔🙏</p>
-    <button onclick="stillAngry2()">I'm still angry 😔</button>
-    <button onclick="notAngry2()">Aww I'm not now 😇</button>
-  `;
-}
-
-function notAngry1() {
-  document.getElementById("content").innerHTML = `
-    <h2>Yayy 😄</h2>
-    <p>Thanks for forgiving 💖</p>
-  `;
-}
-
-function stillAngry2() {
-  document.getElementById("content").innerHTML = `
-    <h2>Yaar 😢</h2>
-    <p>Kavyaa sorryy naa itni si choti baat mein naraz nai hote itnaa 😔🖐🏻 sorryyyy naaa dekh tere liye mene html bhi kiya esa mat kar yaawrr maann jaaa</p>
-    <button id="finalBtn" onclick="finalClick()">Awww okayyyy I'm not angry anymore 😇</button>
-  `;
-}
-
-function notAngry2() {
-  document.getElementById("content").innerHTML = `
-    <h2>Yayy 😄</h2>
-    <p>Thanks for forgiving 💖</p>
-  `;
-}
-
-function finalClick() {
-  clickCount++;
-  if(clickCount >= 5){
-    document.getElementById("content").innerHTML = `
-      <h2>🎉 Ehehehehee 😄</h2>
-      <p>Thankk youu maan jaane keliye 💖🥳</p>
-      <div class="confetti" id="confetti"></div>
-    `;
-    createConfetti();
-  }
-}
-
-function createConfetti() {
-  const confettiContainer = document.getElementById("confetti");
-  for(let i=0; i<100; i++){
-    const confetti = document.createElement('div');
-    confetti.classList.add('confetti-piece');
-    confetti.style.left = Math.random()*100 + '%';
-    confetti.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
-    confetti.style.animationDuration = 2 + Math.random()*3 + 's';
-    confetti.style.width = confetti.style.height = 5 + Math.random()*10 + 'px';
-    confettiContainer.appendChild(confetti);
-  }
-}
-</script>
-</body>
+  <button class="no" onclick="notAngry()">  
+    No 🥰  
+  </button>  
+</div>  <script>  
+  function angry() {  
+    document.getElementById("content").innerHTML = `  
+      <h3>I’m really sorry kavvv🥺💔</h3>  
+      <p>Please forgive me… are you still angry? 😞</p>  
+  
+      <button class="yes"  
+        ontouchstart="moveButton(this)"  
+        onmouseover="moveButton(this)"  
+        onclick="stillAngry()">  
+        Yes 😤  
+      </button>  
+  
+      <button class="no" onclick="notAngry()">  
+        No ❤️  
+      </button>  
+    `;  
+  }  
+  
+  function stillAngry() {  
+    document.getElementById("content").innerHTML = `  
+      <h3>Please naa itni choti baat thi😭💞</h3>  
+  
+      <p style="font-size:14px; line-height:1.6;">  
+       Yaaarrr kavvvvv immm realllly ssorryyy
+        Please don’t stay angry… I really, really care about you 🥺❤️‍🩹  
+      </p>  
+  
+      <button class="yes"  
+        ontouchstart="moveButton(this)"  
+        onmouseover="moveButton(this)"  
+        onclick="finalSorry()">  
+        Still angry 😔  
+      </button>  
+  
+      <button class="no" onclick="notAngry()">  
+        I’m not angry 🫶  
+      </button>  
+    `;  
+  }  
+  
+  function finalSorry() {  
+    document.getElementById("content").innerHTML = `  
+      <h2>I’m truly sorry 😭💔</h2>  
+      <p>Please forgive me 🥺🤍</p>  
+    `;  
+  }  
+  
+  function notAngry() {  
+    document.getElementById("content").innerHTML = `  
+      <h2>Thank youuu 🥹💖</h2>  
+      <p>You have no idea how much this means to me 😭❤️</p>  
+    `;  
+  }  
+  
+  function moveButton(btn) {  
+    const x = Math.random() * 80 - 40;  
+    const y = Math.random() * 60 - 30;  
+    btn.style.transform = `translate(${x}px, ${y}px)`;  
+  }  
+  
+  setInterval(() => {  
+    const heart = document.createElement("div");  
+    heart.className = "heart";  
+    heart.innerHTML = "💖";  
+    heart.style.left = Math.random() * 100 + "vw";  
+    document.body.appendChild(heart);  
+    setTimeout(() => heart.remove(), 6000);  
+  }, 600);  
+</script>  </body>  
 </html>
