@@ -8,226 +8,241 @@
 <style>
 * {
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: Poppins, sans-serif;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg,#ff758c,#ff7eb3);
+  color: #fff;
   text-align: center;
   overflow-x: hidden;
-  color: #fff;
 }
 
-/* Header */
-header {
-  padding: 30px 15px;
-  animation: fadeIn 1.5s ease;
-}
-
-header h1 {
-  font-size: 2.2rem;
-}
-
-header p {
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* Buttons */
-button {
-  background: #ff4d6d;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 25px;
-  font-size: 1rem;
-  color: white;
-  cursor: pointer;
-  margin: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-/* Sections */
-.section {
-  background: rgba(255,255,255,0.25);
-  margin: 20px;
+.page {
+  display: none;
   padding: 20px;
-  border-radius: 20px;
-  backdrop-filter: blur(6px);
-  animation: slideUp 1s ease;
+  min-height: 100vh;
 }
 
-/* Floating hearts */
+.active {
+  display: block;
+}
+
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4d6d;
+  color: #fff;
+  font-size: 1rem;
+  margin: 10px;
+  cursor: pointer;
+}
+
+h1,h2 { margin-top: 20px; }
+
+/* Floating hearts background */
 .heart {
   position: fixed;
   bottom: -20px;
-  font-size: 24px;
-  animation: floatUp 4s linear forwards;
+  animation: float 4s linear forwards;
 }
 
-/* Tap Game */
-#tapArea {
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Bucket Game */
+#bucket {
+  position: fixed;
+  bottom: 20px;
+  left: 40%;
   font-size: 3rem;
-  cursor: pointer;
 }
 
-/* Catch Love */
-#runHeart {
-  font-size: 2.8rem;
-  display: inline-block;
-  animation: moveHeart 1.8s infinite alternate;
-  cursor: pointer;
+.fallingHeart {
+  position: absolute;
+  top: 0;
+  font-size: 2rem;
 }
 
-/* Surprise */
-#surprise {
-  display: none;
-  font-size: 1.2rem;
-  margin-top: 15px;
-  animation: pop 0.6s ease;
+/* Love Meter */
+.popHeart {
+  position: absolute;
+  font-size: 2rem;
 }
 
-/* Animations */
-@keyframes floatUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100vh); opacity: 0; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pop {
-  0% { transform: scale(0.5); }
-  100% { transform: scale(1); }
-}
-
-@keyframes moveHeart {
-  from { transform: translateX(-50px); }
-  to { transform: translateX(50px); }
+/* Quiz */
+.option {
+  display: block;
+  background: rgba(255,255,255,0.25);
+  padding: 12px;
+  margin: 10px;
+  border-radius: 15px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<!-- HOME -->
+<div class="page active" id="home">
   <h1>❤️ Love You Mom ❤️</h1>
-  <p>The best mom in the entire universe 🌍✨</p>
-</header>
-
-<!-- Message -->
-<div class="section">
-  <h2>💌 A Message for You</h2>
-  <p>
-    Mom, you are my strength, my comfort, my forever home.  
-    Everything good in me exists because of you.  
-    I love you endlessly 💖
-  </p>
+  <p>Choose a fun game made with love 💖</p>
+  <button onclick="go('bucketGame')">🪣 Catch Hearts</button>
+  <button onclick="go('quizGame')">🧠 Love Quiz</button>
+  <button onclick="go('loveMeter')">💓 Love Meter</button>
 </div>
 
-<!-- Game 1: Tap Hearts -->
-<div class="section">
-  <h2>💓 Tap the Hearts</h2>
-  <p>Tap the heart to show love!</p>
-  <div id="tapArea">❤️</div>
-  <p>Score: <span id="score">0</span></p>
+<!-- BUCKET GAME -->
+<div class="page" id="bucketGame">
+  <h2>🪣 Catch the Hearts</h2>
+  <p>Move bucket & catch hearts</p>
+  <p>Score: <span id="bucketScore">0</span></p>
+  <div id="bucket">🪣</div>
+  <button onclick="go('home')">⬅ Back</button>
 </div>
 
-<!-- Game 2: Catch the Love -->
-<div class="section">
-  <h2>🏃‍♂️ Catch the Love</h2>
-  <p>Tap the moving heart!</p>
-  <div id="runHeart" onclick="catchLove()">💖</div>
-  <p>Caught: <span id="catchScore">0</span></p>
+<!-- QUIZ GAME -->
+<div class="page" id="quizGame">
+  <h2>🧠 Mom Love Quiz</h2>
+  <p>Lives: ❤️ <span id="lives">3</span></p>
+  <p id="question"></p>
+  <div id="options"></div>
+  <button onclick="go('home')">⬅ Exit</button>
 </div>
 
-<!-- Game 3: Complete the Sentence -->
-<div class="section">
-  <h2>💬 Complete the Sentence</h2>
-  <p>My mom is the most ________ person.</p>
-  <button onclick="sentence('loving')">Loving 💕</button>
-  <button onclick="sentence('caring')">Caring 🌸</button>
-  <button onclick="sentence('amazing')">Amazing 🌟</button>
-  <p id="sentenceResult"></p>
-</div>
-
-<!-- Game 4: Love Meter -->
-<div class="section">
-  <h2>📊 Love Meter</h2>
-  <p>Tap to fill love for mom!</p>
-  <progress id="loveMeter" value="0" max="100"></progress>
+<!-- LOVE METER -->
+<div class="page" id="loveMeter">
+  <h2>💓 Love Meter Challenge</h2>
+  <p>Click hearts in 10 seconds!</p>
+  <p>Time: <span id="time">10</span>s</p>
+  <p>Hearts: <span id="loveScore">0</span></p>
+  <progress id="meter" value="0" max="20"></progress>
   <br><br>
-  <button onclick="fillLove()">Tap ❤️</button>
-  <p id="meterMsg"></p>
-</div>
-
-<!-- Surprise -->
-<div class="section">
-  <h2>🎁 Surprise</h2>
-  <button onclick="showSurprise()">Tap for Surprise</button>
-  <div id="surprise">🌸 You are the heart of our home, Mom 🌸</div>
+  <button onclick="startLoveMeter()">Start</button>
+  <button onclick="go('home')">⬅ Back</button>
 </div>
 
 <script>
-/* Floating hearts background */
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 15 + "px";
+/* Navigation */
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+/* Floating hearts */
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='❤️';
+  h.style.left=Math.random()*100+'vw';
+  h.style.fontSize=Math.random()*20+15+'px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},500);
+
+/* BUCKET GAME */
+let bucket=document.getElementById('bucket');
+let bScore=0;
+document.addEventListener('touchmove',e=>{
+  bucket.style.left=e.touches[0].clientX-30+'px';
+});
+
+setInterval(()=>{
+  if(!document.getElementById('bucketGame').classList.contains('active')) return;
+  let heart=document.createElement('div');
+  heart.className='fallingHeart';
+  heart.innerHTML='💖';
+  heart.style.left=Math.random()*90+'vw';
   document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 4000);
-}, 450);
 
-/* Tap Hearts Game */
-let score = 0;
-document.getElementById("tapArea").onclick = () => {
-  score++;
-  document.getElementById("score").innerText = score;
-};
+  let fall=setInterval(()=>{
+    let top=heart.offsetTop;
+    heart.style.top=top+5+'px';
 
-/* Catch Love Game */
-let catchScore = 0;
-function catchLove() {
-  catchScore++;
-  document.getElementById("catchScore").innerText = catchScore;
-}
+    if(top>window.innerHeight-120){
+      let bRect=bucket.getBoundingClientRect();
+      let hRect=heart.getBoundingClientRect();
+      if(hRect.left>bRect.left && hRect.right<bRect.right){
+        bScore++;
+        document.getElementById('bucketScore').innerText=bScore;
+      }
+      heart.remove();
+      clearInterval(fall);
+    }
+  },30);
+},900);
 
-/* Sentence Game */
-function sentence(word) {
-  document.getElementById("sentenceResult").innerHTML =
-    `Yes 🥰 Mom is truly <b>${word}</b> ❤️`;
-}
+/* QUIZ GAME */
+const quiz=[
+  {q:"Who loves mom the most?",a:["Me","Everyone"],c:0},
+  {q:"Mom is our?",a:["Strength","Weakness"],c:0},
+  {q:"Mom deserves?",a:["All love","Nothing"],c:0}
+];
+let qi=0,lives=3;
 
-/* Love Meter */
-let loveValue = 0;
-function fillLove() {
-  if (loveValue < 100) {
-    loveValue += 10;
-    document.getElementById("loveMeter").value = loveValue;
+function loadQ(){
+  if(lives<=0){
+    document.getElementById('question').innerText="Game Over 💔";
+    document.getElementById('options').innerHTML="";
+    return;
   }
-  if (loveValue >= 100) {
-    document.getElementById("meterMsg").innerHTML =
-      "💯 Love Overflowing! Best Mom Ever 💖";
-  }
+  let q=quiz[qi];
+  document.getElementById('question').innerText=q.q;
+  document.getElementById('options').innerHTML="";
+  q.a.forEach((o,i)=>{
+    let d=document.createElement('div');
+    d.className='option';
+    d.innerText=o;
+    d.onclick=()=>check(i);
+    document.getElementById('options').appendChild(d);
+  });
 }
+function check(i){
+  if(i===quiz[qi].c){
+    qi=(qi+1)%quiz.length;
+  }else{
+    lives--;
+    document.getElementById('lives').innerText=lives;
+  }
+  loadQ();
+}
+loadQ();
 
-/* Surprise */
-function showSurprise() {
-  document.getElementById("surprise").style.display = "block";
+/* LOVE METER */
+let lScore=0,timer;
+function startLoveMeter(){
+  lScore=0;
+  document.getElementById('loveScore').innerText=0;
+  document.getElementById('meter').value=0;
+  let time=10;
+  document.getElementById('time').innerText=time;
+
+  timer=setInterval(()=>{
+    time--;
+    document.getElementById('time').innerText=time;
+    if(time<=0) clearInterval(timer);
+  },1000);
+
+  let spawn=setInterval(()=>{
+    if(time<=0){clearInterval(spawn);return;}
+    let h=document.createElement('div');
+    h.className='popHeart';
+    h.innerHTML='💖';
+    h.style.left=Math.random()*90+'vw';
+    h.style.top=Math.random()*70+'vh';
+    document.body.appendChild(h);
+    h.onclick=()=>{
+      lScore++;
+      document.getElementById('loveScore').innerText=lScore;
+      document.getElementById('meter').value=lScore;
+      h.remove();
+    };
+    setTimeout(()=>h.remove(),700);
+  },400);
 }
 </script>
 
