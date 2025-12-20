@@ -6,10 +6,7 @@
 <title>Love You Mom ❤️</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Poppins,sans-serif;
-}
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
 
 body{
   margin:0;
@@ -23,18 +20,16 @@ body{
   min-height:100vh;
   padding:20px;
 }
-
 .active{display:block}
 
 button{
-  padding:12px 20px;
+  padding:12px 22px;
   border:none;
   border-radius:25px;
   background:#ff4d6d;
   color:white;
   font-size:1rem;
   margin:8px;
-  cursor:pointer;
 }
 
 .option{
@@ -48,10 +43,9 @@ button{
 /* BUCKET GAME */
 #bucketIcon{
   position:fixed;
-  bottom:15px;
-  font-size:4rem;   /* BIGGER BUCKET */
+  bottom:20px;
+  font-size:4.5rem;
 }
-
 .fallHeart{
   position:absolute;
   top:0;
@@ -72,13 +66,13 @@ button{
 <!-- HOME -->
 <div class="page active" id="home">
   <h1>❤️ Love You Mom ❤️</h1>
-  <p>Games made with love 💖</p>
+  <p>Made with pure dil se 🥺💖</p>
   <button onclick="startBucket()">🪣 Catch Hearts</button>
   <button onclick="startQuiz()">🧠 Heart Quiz</button>
   <button onclick="go('meter')">💓 Love Meter</button>
 </div>
 
-<!-- BUCKET GAME -->
+<!-- BUCKET -->
 <div class="page" id="bucket">
   <h2>🪣 Catch the Hearts</h2>
   <p>Catch 20 ❤️ to win | Miss 3 = Lose</p>
@@ -95,7 +89,7 @@ button{
   <button onclick="go('home')">⬅ Exit</button>
 </div>
 
-<!-- QUIZ RESULT -->
+<!-- RESULT -->
 <div class="page" id="result">
   <h2>📊 Love Result ❤️</h2>
   <canvas id="pieChart" width="250" height="250"></canvas>
@@ -108,7 +102,7 @@ button{
   <h2>💓 Love Meter</h2>
   <p>Time: <span id="time">10</span>s</p>
   <p>Hearts: <span id="mScore">0</span></p>
-  <progress id="prog" value="0" max="30"></progress>
+  <progress id="prog" value="0" max="15"></progress>
   <br><br>
   <button onclick="startMeter()">Start</button>
   <button onclick="go('home')">⬅ Exit</button>
@@ -121,74 +115,60 @@ function go(id){
   document.getElementById(id).classList.add('active');
 }
 
-/* ================= BUCKET GAME (FIXED) ================= */
-let bucket = document.getElementById("bucketIcon");
-let bScore = 0, miss = 0;
-let bucketActive = false;
+/* ========== BUCKET GAME ========== */
+let bScore=0, miss=0, bucketActive=false;
+let bucket=document.getElementById("bucketIcon");
 let bucketInterval;
 
 function startBucket(){
-  bScore = 0;
-  miss = 0;
-  bucketActive = true;
-  document.getElementById("bScore").innerText = 0;
-  document.getElementById("miss").innerText = 0;
-  bucket.style.left = "40%";
+  bScore=0; miss=0; bucketActive=true;
+  document.getElementById("bScore").innerText=0;
+  document.getElementById("miss").innerText=0;
+  bucket.style.left="40%";
   go("bucket");
 }
 
-document.addEventListener("touchmove", e => {
-  if (!bucketActive) return;
-  bucket.style.left = e.touches[0].clientX - 40 + "px";
+document.addEventListener("touchmove",e=>{
+  if(bucketActive) bucket.style.left=e.touches[0].clientX-40+"px";
 });
 
 function spawnHeart(){
-  if (!bucketActive) return;
-
-  let h = document.createElement("div");
-  h.className = "fallHeart";
-  h.innerHTML = "❤️";
-  h.style.left = Math.random() * 90 + "vw";
+  if(!bucketActive) return;
+  let h=document.createElement("div");
+  h.className="fallHeart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*90+"vw";
   document.body.appendChild(h);
 
-  let fall = setInterval(() => {
-    if (!bucketActive) {
-      h.remove();
-      clearInterval(fall);
-      return;
-    }
+  let fall=setInterval(()=>{
+    if(!bucketActive){h.remove();clearInterval(fall);return;}
+    h.style.top=h.offsetTop+6+"px";
 
-    h.style.top = h.offsetTop + 6 + "px";
+    if(h.offsetTop>window.innerHeight-120){
+      let b=bucket.getBoundingClientRect();
+      let r=h.getBoundingClientRect();
 
-    if (h.offsetTop > window.innerHeight - 120) {
-      let b = bucket.getBoundingClientRect();
-      let r = h.getBoundingClientRect();
-
-      if (r.left > b.left && r.right < b.right) {
+      if(r.left>b.left && r.right<b.right){
         bScore++;
-        document.getElementById("bScore").innerText = bScore;
-        if (bScore >= 20) endBucket("YOU WON ❤️");
-      } else {
+        document.getElementById("bScore").innerText=bScore;
+        if(bScore>=20) endBucket("YOU WON ❤️");
+      }else{
         miss++;
-        document.getElementById("miss").innerText = miss;
-        if (miss >= 3) endBucket("YOU LOST 💔");
+        document.getElementById("miss").innerText=miss;
+        if(miss>=3) endBucket("YOU LOST 💔");
       }
-
-      h.remove();
-      clearInterval(fall);
+      h.remove(); clearInterval(fall);
     }
-  }, 30);
+  },30);
 }
+bucketInterval=setInterval(spawnHeart,800);
 
 function endBucket(msg){
-  bucketActive = false;
-  clearInterval(bucketInterval);
+  bucketActive=false;
   alert(msg);
 }
 
-bucketInterval = setInterval(spawnHeart, 800);
-
-/* ================= MCQ QUIZ ================= */
+/* ========== QUIZ ========== */
 const mcq=[
   "Who loves you more?",
   "Who is your favourite child?",
@@ -199,108 +179,83 @@ const mcq=[
   "Who can live alone whole day?",
   "Who has more talent?"
 ];
-
 let qIndex=0,dev=0,dhun=0;
 
 function startQuiz(){
   qIndex=0;dev=0;dhun=0;
-  go("quiz");
-  loadMCQ();
+  go("quiz"); loadMCQ();
 }
-
 function loadMCQ(){
   mcqQuestion.innerText=mcq[qIndex];
   mcqOptions.innerHTML="";
-  ["Dev","Dhun"].forEach(name=>{
+  ["Dev","Dhun"].forEach(n=>{
     let d=document.createElement("div");
-    d.className="option";
-    d.innerText=name;
-    d.onclick=()=>{
-      name==="Dev"?dev++:dhun++;
-      nextQ();
-    };
+    d.className="option"; d.innerText=n;
+    d.onclick=()=>{n==="Dev"?dev++:dhun++;nextQ();};
     mcqOptions.appendChild(d);
   });
 }
-
 function nextQ(){
   qIndex++;
-  if(qIndex>=mcq.length){
-    showResult();
-  } else loadMCQ();
+  qIndex>=mcq.length?showResult():loadMCQ();
 }
-
 function showResult(){
   go("result");
   let total=dev+dhun;
-  let devP=Math.round((dev/total)*100);
-  let dhunP=100-devP;
-  resultText.innerHTML=`❤️ Dev: <b>${devP}%</b><br>💖 Dhun: <b>${dhunP}%</b>`;
-  drawPie(devP);
+  let dp=Math.round(dev/total*100);
+  resultText.innerHTML=`❤️ Dev: <b>${dp}%</b><br>💖 Dhun: <b>${100-dp}%</b>`;
+  drawPie(dp);
 }
-
-function drawPie(devP){
+function drawPie(p){
   let c=pieChart.getContext("2d");
   c.clearRect(0,0,250,250);
-  let angle=(devP/100)*2*Math.PI;
-  c.beginPath();
-  c.moveTo(125,125);
-  c.arc(125,125,100,0,angle);
-  c.fillStyle="#ff4d6d";
-  c.fill();
-  c.beginPath();
-  c.moveTo(125,125);
-  c.arc(125,125,100,angle,2*Math.PI);
-  c.fillStyle="#ffd166";
-  c.fill();
+  let a=p/100*2*Math.PI;
+  c.beginPath();c.moveTo(125,125);
+  c.arc(125,125,100,0,a);c.fillStyle="#ff4d6d";c.fill();
+  c.beginPath();c.moveTo(125,125);
+  c.arc(125,125,100,a,2*Math.PI);c.fillStyle="#ffd166";c.fill();
 }
 
-/* ================= LOVE METER (FIXED) ================= */
-let meterActive=false;
-let mScore=0;
+/* ========== LOVE METER (FINAL FIX) ========== */
+let meterActive=false,mScore=0;
 const TARGET=15;
 
 function startMeter(){
   if(meterActive) return;
   meterActive=true;
   mScore=0;
-  prog.value=0;
-  mScoreSpan.innerText=0;
+  document.getElementById("mScore").innerText=0;
+  document.getElementById("prog").value=0;
 
   let t=10;
   time.innerText=t;
 
   let timer=setInterval(()=>{
-    t--;
-    time.innerText=t;
+    t--; time.innerText=t;
     if(t<=0){
       clearInterval(timer);
       meterActive=false;
       alert(mScore<TARGET
-        ? "Uh oh 😢 you don’t love us good enough to fill the love meter.\nTry again 💔❤️"
-        : "Love Meter FULL ❤️ You did it!");
+        ?"Uh oh 😢 you don’t love us good enough to fill the love meter.\nTry again ❤️"
+        :"Love Meter FULL ❤️");
     }
   },1000);
 
   let spawn=setInterval(()=>{
-    if(!meterActive){
-      clearInterval(spawn);
-      return;
-    }
+    if(!meterActive){clearInterval(spawn);return;}
     let h=document.createElement("div");
     h.className="popHeart";
     h.innerHTML="❤️";
-    h.style.left=Math.random()*70+15+"vw";
+    h.style.left=Math.random()*60+20+"vw";
     document.body.appendChild(h);
 
     h.onclick=()=>{
       if(!meterActive) return;
       mScore++;
-      mScoreSpan.innerText=mScore;
-      prog.value=mScore;
+      document.getElementById("mScore").innerText=mScore;
+      document.getElementById("prog").value=mScore;
       h.remove();
     };
-
     setTimeout(()=>h.remove(),600);
   },350);
 }
