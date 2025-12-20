@@ -49,7 +49,7 @@ button{
 #bucketIcon{
   position:fixed;
   bottom:15px;
-  font-size:3rem;
+  font-size:4rem;   /* BIGGER BUCKET */
 }
 
 .fallHeart{
@@ -73,7 +73,7 @@ button{
 <div class="page active" id="home">
   <h1>❤️ Love You Mom ❤️</h1>
   <p>Games made with love 💖</p>
-  <button onclick="go('bucket')">🪣 Catch Hearts</button>
+  <button onclick="startBucket()">🪣 Catch Hearts</button>
   <button onclick="startQuiz()">🧠 Heart Quiz</button>
   <button onclick="go('meter')">💓 Love Meter</button>
 </div>
@@ -121,47 +121,74 @@ function go(id){
   document.getElementById(id).classList.add('active');
 }
 
-/* ---------------- BUCKET GAME ---------------- */
-let bucket=document.getElementById("bucketIcon");
-bucket.style.left="45%";
+/* ================= BUCKET GAME (FIXED) ================= */
+let bucket = document.getElementById("bucketIcon");
+let bScore = 0, miss = 0;
+let bucketActive = false;
+let bucketInterval;
 
-let bScore=0,miss=0;
-document.addEventListener("touchmove",e=>{
-  if(!document.getElementById("bucket").classList.contains("active"))return;
-  bucket.style.left=e.touches[0].clientX-30+"px";
+function startBucket(){
+  bScore = 0;
+  miss = 0;
+  bucketActive = true;
+  document.getElementById("bScore").innerText = 0;
+  document.getElementById("miss").innerText = 0;
+  bucket.style.left = "40%";
+  go("bucket");
+}
+
+document.addEventListener("touchmove", e => {
+  if (!bucketActive) return;
+  bucket.style.left = e.touches[0].clientX - 40 + "px";
 });
 
-setInterval(()=>{
-  if(!document.getElementById("bucket").classList.contains("active"))return;
-  if(bScore>=20 || miss>=3)return;
+function spawnHeart(){
+  if (!bucketActive) return;
 
-  let h=document.createElement("div");
-  h.className="fallHeart";
-  h.innerHTML="❤️";
-  h.style.left=Math.random()*90+"vw";
+  let h = document.createElement("div");
+  h.className = "fallHeart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 90 + "vw";
   document.body.appendChild(h);
 
-  let fall=setInterval(()=>{
-    h.style.top=h.offsetTop+6+"px";
-    if(h.offsetTop>window.innerHeight-120){
-      let b=bucket.getBoundingClientRect();
-      let r=h.getBoundingClientRect();
-      if(r.left>b.left && r.right<b.right){
+  let fall = setInterval(() => {
+    if (!bucketActive) {
+      h.remove();
+      clearInterval(fall);
+      return;
+    }
+
+    h.style.top = h.offsetTop + 6 + "px";
+
+    if (h.offsetTop > window.innerHeight - 120) {
+      let b = bucket.getBoundingClientRect();
+      let r = h.getBoundingClientRect();
+
+      if (r.left > b.left && r.right < b.right) {
         bScore++;
-        document.getElementById("bScore").innerText=bScore;
-        if(bScore===20) alert("YOU WON ❤️");
-      }else{
+        document.getElementById("bScore").innerText = bScore;
+        if (bScore >= 20) endBucket("YOU WON ❤️");
+      } else {
         miss++;
-        document.getElementById("miss").innerText=miss;
-        if(miss===3) alert("YOU LOST 💔");
+        document.getElementById("miss").innerText = miss;
+        if (miss >= 3) endBucket("YOU LOST 💔");
       }
+
       h.remove();
       clearInterval(fall);
     }
-  },30);
-},800);
+  }, 30);
+}
 
-/* ---------------- MCQ QUIZ ---------------- */
+function endBucket(msg){
+  bucketActive = false;
+  clearInterval(bucketInterval);
+  alert(msg);
+}
+
+bucketInterval = setInterval(spawnHeart, 800);
+
+/* ================= MCQ QUIZ ================= */
 const mcq=[
   "Who loves you more?",
   "Who is your favourite child?",
@@ -200,7 +227,7 @@ function nextQ(){
   qIndex++;
   if(qIndex>=mcq.length){
     showResult();
-  }else loadMCQ();
+  } else loadMCQ();
 }
 
 function showResult(){
@@ -209,13 +236,13 @@ function showResult(){
   let devP=Math.round((dev/total)*100);
   let dhunP=100-devP;
   resultText.innerHTML=`❤️ Dev: <b>${devP}%</b><br>💖 Dhun: <b>${dhunP}%</b>`;
-  drawPie(devP,dhunP);
+  drawPie(devP);
 }
 
-function drawPie(dv,dh){
+function drawPie(devP){
   let c=pieChart.getContext("2d");
   c.clearRect(0,0,250,250);
-  let angle=(dv/100)*2*Math.PI;
+  let angle=(devP/100)*2*Math.PI;
   c.beginPath();
   c.moveTo(125,125);
   c.arc(125,125,100,0,angle);
@@ -228,13 +255,14 @@ function drawPie(dv,dh){
   c.fill();
 }
 
-/* ---------------- LOVE METER (UPDATED) ---------------- */
-let active=false,mScore=0;
-const TARGET = 15;
+/* ================= LOVE METER (FIXED) ================= */
+let meterActive=false;
+let mScore=0;
+const TARGET=15;
 
 function startMeter(){
-  if(active)return;
-  active=true;
+  if(meterActive) return;
+  meterActive=true;
   mScore=0;
   prog.value=0;
   mScoreSpan.innerText=0;
@@ -247,18 +275,18 @@ function startMeter(){
     time.innerText=t;
     if(t<=0){
       clearInterval(timer);
-      active=false;
-
-      if(mScore < TARGET){
-        alert("Uh oh 😢 you don’t love us good enough to fill the love meter.\nTry again 💔❤️");
-      }else{
-        alert("Love Meter FULL ❤️ You did it!");
-      }
+      meterActive=false;
+      alert(mScore<TARGET
+        ? "Uh oh 😢 you don’t love us good enough to fill the love meter.\nTry again 💔❤️"
+        : "Love Meter FULL ❤️ You did it!");
     }
   },1000);
 
   let spawn=setInterval(()=>{
-    if(!active){clearInterval(spawn);return;}
+    if(!meterActive){
+      clearInterval(spawn);
+      return;
+    }
     let h=document.createElement("div");
     h.className="popHeart";
     h.innerHTML="❤️";
@@ -266,7 +294,7 @@ function startMeter(){
     document.body.appendChild(h);
 
     h.onclick=()=>{
-      if(!active)return;
+      if(!meterActive) return;
       mScore++;
       mScoreSpan.innerText=mScore;
       prog.value=mScore;
