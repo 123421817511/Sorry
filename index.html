@@ -3,263 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Love You Mom ❤️</title>
-
+<title>For My BSF ❤️</title>
 <style>
-*{box-sizing:border-box;font-family:Poppins,sans-serif}
-
-body{
-  margin:0;
-  background:linear-gradient(135deg,#ff758c,#ff7eb3);
-  color:#fff;
-  text-align:center;
-}
-
-.page{
-  display:none;
-  min-height:100vh;
-  padding:20px;
-}
-.active{display:block}
-
-button{
-  padding:12px 22px;
-  border:none;
-  border-radius:25px;
-  background:#ff4d6d;
-  color:white;
-  font-size:1rem;
-  margin:8px;
-}
-
-.option{
-  background:rgba(255,255,255,0.25);
-  padding:14px;
-  margin:10px;
-  border-radius:15px;
-  font-size:1.1rem;
-}
-
-/* BUCKET GAME */
-#bucketIcon{
-  position:fixed;
-  bottom:20px;
-  font-size:4.5rem;
-}
-.fallHeart{
-  position:absolute;
-  top:0;
-  font-size:2rem;
-}
-
-/* LOVE METER */
-.popHeart{
-  position:absolute;
-  bottom:25%;
-  font-size:2.2rem;
-}
+body{margin:0; font-family:sans-serif; text-align:center; background:linear-gradient(135deg,#ffd6e8,#ffeaf3,#fff5fa);}
+h1{color:#ff478d;margin-top:30px;}
+.container{max-width:1000px;margin:0 auto;padding:40px;}
+button{padding:14px 28px;border:none;border-radius:8px;background:#ff8fb5;color:white;font-size:18px;cursor:pointer;margin:5px;}
+.game{display:none;margin-top:20px;}
+#heart-area{position:relative;width:100%;height:400px;background:white;border-radius:20px;overflow:hidden;box-shadow:0 0 15px rgba(0,0,0,0.1);}
+.heart{position:absolute;font-size:30px;color:#ff478d;cursor:pointer;user-select:none;}
+.nav{margin-top:20px;}
+.nav button{background:#ff478d;}
+#flower-box{width:200px;height:200px;border:2px dashed #ff8fb5;margin:20px auto;position:relative;}
+#flowerCanvas{width:200px;height:200px;background:white;display:block;margin:0 auto;touch-action:none;}
+#message{display:none;margin-top:20px;color:#ff478d;font-weight:bold;font-size:24px;position:relative;}
+#emojiArea{position:relative;width:100%;height:300px;border-radius:20px;background:white;margin-top:10px;}
+.floating-heart{position:absolute;font-size:30px;animation: floatUp 2s forwards;}
+@keyframes floatUp {0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-150px) scale(1.5);}}
+@media(max-width:600px){#heart-area{height:250px;}#flowerCanvas{width:150px;height:150px;}#flower-box{width:150px;height:150px;}}
 </style>
 </head>
-
 <body>
 
-<!-- HOME -->
-<div class="page active" id="home">
-  <h1>❤️ Love You Mom ❤️</h1>
-  <p>Made with pure dil se 🥺💖</p>
-  <button onclick="startBucket()">🪣 Catch Hearts</button>
-  <button onclick="startQuiz()">🧠 Heart Quiz</button>
-  <button onclick="go('meter')">💓 Love Meter</button>
+<!-- Start Screen -->
+<div id="start-screen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ffc1d9,#ffe0ec,#fff2f8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
+  <h1 style="color:#ff4f91;font-size:28px;">💗 For My BSF 💗</h1>
+  <p style="color:#c7386b;font-size:18px;margin:10px 20px;">I made this for you... tap to begin 🤍</p>
+  <button id="start-btn" style="padding:12px 25px;font-size:18px;border-radius:30px;background:#ff8fb5;color:white;border:none;cursor:pointer;">Start 💞</button>
 </div>
 
-<!-- BUCKET -->
-<div class="page" id="bucket">
-  <h2>🪣 Catch the Hearts</h2>
-  <p>Catch 20 ❤️ to win | Miss 3 = Lose</p>
-  <p>Score: <span id="bScore">0</span> | Missed: <span id="miss">0</span></p>
-  <div id="bucketIcon">🪣</div>
-  <button onclick="go('home')">⬅ Exit</button>
-</div>
+<h1>💕 Special Mini Games For My BSF 💕</h1>
+<div class="container">
+  <div class="nav">
+    <button onclick="showGame('game1')">hehe simple heart game</button>
+    <button onclick="showGame('game2')">drawww</button>
+    <button onclick="showGame('game3')">emojiisssssss</button>
+  </div>
 
-<!-- QUIZ -->
-<div class="page" id="quiz">
-  <h2>🧠 Mom’s Heart Quiz ❤️</h2>
-  <p id="mcqQuestion"></p>
-  <div id="mcqOptions"></div>
-  <button onclick="go('home')">⬅ Exit</button>
-</div>
+  <!-- GAME 1: Heart Tap -->
+  <div id="game1" class="game">
+    <h2>Heart Tap Challenge ❤️</h2>
+    <p>Click 20 hearts in 15 seconds to win!</p>
+    <button onclick="startHearts()">Start</button>
+    <p id="score">Score: 0</p>
+    <p id="timer">Time: 15</p>
+    <div id="heart-area"></div>
+  </div>
 
-<!-- RESULT -->
-<div class="page" id="result">
-  <h2>📊 Love Result ❤️</h2>
-  <canvas id="pieChart" width="250" height="250"></canvas>
-  <p id="resultText"></p>
-  <button onclick="go('home')">⬅ Home</button>
-</div>
+  <!-- GAME 2: Draw Flower Strict -->
+  <div id="game2" class="game">
+    <h2>Hint: Draw a flower inside the box 🌸</h2>
+    <div id="flower-box">
+      <canvas id="flowerCanvas" width="200" height="200"></canvas>
+    </div>
+    <p><button onclick="checkDrawing()">Submit</button></p>
+    <div id="message">EHEHE DM FOR SURPRISE</div>
+  </div>
 
-<!-- LOVE METER -->
-<div class="page" id="meter">
-  <h2>💓 Love Meter</h2>
-  <p>Time: <span id="time">10</span>s</p>
-  <p>Hearts: <span id="mScore">0</span></p>
-  <progress id="prog" value="0" max="15"></progress>
-  <br><br>
-  <button onclick="startMeter()">Start</button>
-  <button onclick="go('home')">⬅ Exit</button>
+  <!-- GAME 3: Emoji Click -->
+  <div id="game3" class="game">
+    <h2>Emoji Click Challenge 😎</h2>
+    <p>Click the moving emoji 10 times to win!</p>
+    <button onclick="startEmoji()">Start</button>
+    <p id="emojiScore">Score: 0</p>
+    <div id="emojiArea"></div>
+  </div>
 </div>
 
 <script>
-/* NAV */
-function go(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-/* ========== BUCKET GAME ========== */
-let bScore=0, miss=0, bucketActive=false;
-let bucket=document.getElementById("bucketIcon");
-let bucketInterval;
-
-function startBucket(){
-  bScore=0; miss=0; bucketActive=true;
-  document.getElementById("bScore").innerText=0;
-  document.getElementById("miss").innerText=0;
-  bucket.style.left="40%";
-  go("bucket");
-}
-
-document.addEventListener("touchmove",e=>{
-  if(bucketActive) bucket.style.left=e.touches[0].clientX-40+"px";
+// START BUTTON
+document.getElementById('start-btn').addEventListener('click',()=>{
+  document.getElementById('start-screen').style.display='none';
 });
 
+// NAVIGATION
+function showGame(id){
+  document.querySelectorAll('.game').forEach(g=>g.style.display='none');
+  document.getElementById(id).style.display='block';
+}
+
+// GAME 1: Heart Tap
+let heartScore=0, heartTimer, heartActive=false;
+function startHearts(){
+  heartScore=0; heartActive=true;
+  document.getElementById('score').innerText='Score: 0';
+  const area=document.getElementById('heart-area');
+  area.innerHTML='';
+  let time=15;
+  document.getElementById('timer').innerText='Time: 15';
+  heartTimer=setInterval(()=>{
+    time--;
+    document.getElementById('timer').innerText='Time: '+time;
+    if(time<=0){clearInterval(heartTimer); alert('Time over!'); area.innerHTML=''; heartActive=false;}
+  },1000);
+  spawnHeart();
+}
 function spawnHeart(){
-  if(!bucketActive) return;
-  let h=document.createElement("div");
-  h.className="fallHeart";
-  h.innerHTML="❤️";
-  h.style.left=Math.random()*90+"vw";
-  document.body.appendChild(h);
-
-  let fall=setInterval(()=>{
-    if(!bucketActive){h.remove();clearInterval(fall);return;}
-    h.style.top=h.offsetTop+6+"px";
-
-    if(h.offsetTop>window.innerHeight-120){
-      let b=bucket.getBoundingClientRect();
-      let r=h.getBoundingClientRect();
-
-      if(r.left>b.left && r.right<b.right){
-        bScore++;
-        document.getElementById("bScore").innerText=bScore;
-        if(bScore>=20) endBucket("YOU WON ❤️");
-      }else{
-        miss++;
-        document.getElementById("miss").innerText=miss;
-        if(miss>=3) endBucket("YOU LOST 💔");
-      }
-      h.remove(); clearInterval(fall);
-    }
-  },30);
-}
-bucketInterval=setInterval(spawnHeart,800);
-
-function endBucket(msg){
-  bucketActive=false;
-  alert(msg);
-}
-
-/* ========== QUIZ ========== */
-const mcq=[
-  "Who loves you more?",
-  "Who is your favourite child?",
-  "Who do you care about more?",
-  "Who is naughtiest?",
-  "Who is innocent?",
-  "Who is more cool?",
-  "Who can live alone whole day?",
-  "Who has more talent?"
-];
-let qIndex=0,dev=0,dhun=0;
-
-function startQuiz(){
-  qIndex=0;dev=0;dhun=0;
-  go("quiz"); loadMCQ();
-}
-function loadMCQ(){
-  mcqQuestion.innerText=mcq[qIndex];
-  mcqOptions.innerHTML="";
-  ["Dev","Dhun"].forEach(n=>{
-    let d=document.createElement("div");
-    d.className="option"; d.innerText=n;
-    d.onclick=()=>{n==="Dev"?dev++:dhun++;nextQ();};
-    mcqOptions.appendChild(d);
+  if(!heartActive) return;
+  const area=document.getElementById('heart-area');
+  area.innerHTML=''; // Only one heart at a time
+  const heart=document.createElement('div');
+  heart.classList.add('heart');
+  heart.innerText='❤️';
+  heart.style.top=Math.random()*(area.offsetHeight-30)+'px';
+  heart.style.left=Math.random()*(area.offsetWidth-30)+'px';
+  area.appendChild(heart);
+  heart.addEventListener('click',()=>{
+    heartScore++;
+    document.getElementById('score').innerText='Score: '+heartScore;
+    if(heartScore<20) spawnHeart();
+    else{clearInterval(heartTimer); alert('You won! ❤️'); area.innerHTML=''; heartActive=false;}
   });
 }
-function nextQ(){
-  qIndex++;
-  qIndex>=mcq.length?showResult():loadMCQ();
-}
-function showResult(){
-  go("result");
-  let total=dev+dhun;
-  let dp=Math.round(dev/total*100);
-  resultText.innerHTML=`❤️ Dev: <b>${dp}%</b><br>💖 Dhun: <b>${100-dp}%</b>`;
-  drawPie(dp);
-}
-function drawPie(p){
-  let c=pieChart.getContext("2d");
-  c.clearRect(0,0,250,250);
-  let a=p/100*2*Math.PI;
-  c.beginPath();c.moveTo(125,125);
-  c.arc(125,125,100,0,a);c.fillStyle="#ff4d6d";c.fill();
-  c.beginPath();c.moveTo(125,125);
-  c.arc(125,125,100,a,2*Math.PI);c.fillStyle="#ffd166";c.fill();
+
+// GAME 2: Draw Flower Strict
+const canvas=document.getElementById('flowerCanvas');
+const ctx=canvas.getContext('2d');
+let drawing=false;
+canvas.addEventListener('pointerdown',()=>drawing=true);
+canvas.addEventListener('pointerup',()=>drawing=false);
+canvas.addEventListener('pointermove',draw);
+function draw(e){
+  if(!drawing) return;
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  ctx.fillStyle='pink';
+  ctx.beginPath();
+  ctx.arc(x,y,5,0,Math.PI*2);
+  ctx.fill();
 }
 
-/* ========== LOVE METER (FINAL FIX) ========== */
-let meterActive=false,mScore=0;
-const TARGET=15;
+// Define flower zones (center + petals)
+const zones=[
+  {x:100,y:100,r:20,count:0,min:10}, // center
+  {x:60,y:60,r:15,count:0,min:10},   // petal1
+  {x:140,y:60,r:15,count:0,min:10},  // petal2
+  {x:60,y:140,r:15,count:0,min:10},  // petal3
+  {x:140,y:140,r:15,count:0,min:10}, // petal4
+  {x:100,y:40,r:12,count:0,min:10}   // petal5 top
+];
 
-function startMeter(){
-  if(meterActive) return;
-  meterActive=true;
-  mScore=0;
-  document.getElementById("mScore").innerText=0;
-  document.getElementById("prog").value=0;
-
-  let t=10;
-  time.innerText=t;
-
-  let timer=setInterval(()=>{
-    t--; time.innerText=t;
-    if(t<=0){
-      clearInterval(timer);
-      meterActive=false;
-      alert(mScore<TARGET
-        ?"Uh oh 😢 you don’t love us good enough to fill the love meter.\nTry again ❤️"
-        :"Love Meter FULL ❤️");
+function checkDrawing(){
+  const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+  // Reset counts
+  zones.forEach(z=>z.count=0);
+  for(let y=0;y<canvas.height;y++){
+    for(let x=0;x<canvas.width;x++){
+      const i=(y*canvas.width+x)*4;
+      const r=imgData.data[i],g=imgData.data[i+1],b=imgData.data[i+2];
+      if(r!==255 || g!==255 || b!==255){
+        zones.forEach(z=>{
+          const dx=x-z.x, dy=y-z.y;
+          if(dx*dx+dy*dy<=z.r*z.r) z.count++;
+        });
+      }
     }
-  },1000);
+  }
+  const allPassed=zones.every(z=>z.count>=z.min);
+  if(allPassed){
+    document.getElementById('message').style.display='block';
+    for(let i=0;i<10;i++){
+      const h=document.createElement('div');
+      h.classList.add('floating-heart');
+      h.style.left=(50+Math.random()*150)+'px';
+      h.style.top=(50+Math.random()*150)+'px';
+      h.innerText='❤️';
+      document.getElementById('game2').appendChild(h);
+      setTimeout(()=>h.remove(),2000);
+    }
+  } else alert('Draw a flower covering all zones!');
+}
 
-  let spawn=setInterval(()=>{
-    if(!meterActive){clearInterval(spawn);return;}
-    let h=document.createElement("div");
-    h.className="popHeart";
-    h.innerHTML="❤️";
-    h.style.left=Math.random()*60+20+"vw";
-    document.body.appendChild(h);
-
-    h.onclick=()=>{
-      if(!meterActive) return;
-      mScore++;
-      document.getElementById("mScore").innerText=mScore;
-      document.getElementById("prog").value=mScore;
-      h.remove();
-    };
-    setTimeout(()=>h.remove(),600);
-  },350);
+// GAME 3: EMOJI CLICK
+let emojiScore=0, emojiInterval;
+function startEmoji(){
+  emojiScore=0; document.getElementById('emojiScore').innerText='Score: 0';
+  const area=document.getElementById('emojiArea');
+  area.innerHTML='';
+  const emoji=document.createElement('div');
+  emoji.innerText='😎'; emoji.style.position='absolute'; emoji.style.fontSize='40px';
+  area.appendChild(emoji);
+  emoji.addEventListener('click',()=>{
+    emojiScore++; document.getElementById('emojiScore').innerText='Score: '+emojiScore;
+    if(emojiScore>=10){clearInterval(emojiInterval); alert('You won! 😎'); area.innerHTML='';}
+  });
+  emojiInterval=setInterval(()=>{
+    emoji.style.top=Math.random()*(area.offsetHeight-40)+'px';
+    emoji.style.left=Math.random()*(area.offsetWidth-40)+'px';
+  },600);
 }
 </script>
-
 </body>
 </html>
