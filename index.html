@@ -3,196 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My BSF ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0; font-family:sans-serif; text-align:center; background:linear-gradient(135deg,#ffd6e8,#ffeaf3,#fff5fa);}
-h1{color:#ff478d;margin-top:30px;}
-.container{max-width:1000px;margin:0 auto;padding:40px;}
-button{padding:14px 28px;border:none;border-radius:8px;background:#ff8fb5;color:white;font-size:18px;cursor:pointer;margin:5px;}
-.game{display:none;margin-top:20px;}
-#heart-area{position:relative;width:100%;height:400px;background:white;border-radius:20px;overflow:hidden;box-shadow:0 0 15px rgba(0,0,0,0.1);}
-.heart{position:absolute;font-size:30px;color:#ff478d;cursor:pointer;user-select:none;}
-.nav{margin-top:20px;}
-.nav button{background:#ff478d;}
-#flower-box{width:200px;height:200px;border:2px dashed #ff8fb5;margin:20px auto;position:relative;}
-#flowerCanvas{width:200px;height:200px;background:white;display:block;margin:0 auto;touch-action:none;}
-#message{display:none;margin-top:20px;color:#ff478d;font-weight:bold;font-size:24px;position:relative;}
-#emojiArea{position:relative;width:100%;height:300px;border-radius:20px;background:white;margin-top:10px;}
-.floating-heart{position:absolute;font-size:30px;animation: floatUp 2s forwards;}
-@keyframes floatUp {0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-150px) scale(1.5);}}
-@media(max-width:600px){#heart-area{height:250px;}#flowerCanvas{width:150px;height:150px;}#flower-box{width:150px;height:150px;}}
+body {
+  margin: 0;
+  background: #e29c9c;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+/* iOS style hearts */
+body::before {
+  content: "";
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  background-image:
+    url('https://em-content.zobj.net/source/apple/391/red-heart_2764-fe0f.png'),
+    url('https://em-content.zobj.net/source/apple/391/heart-hands-light-skin-tone_1faf6-1f3fb.png');
+  background-size: 60px 60px;
+  background-repeat: repeat;
+  background-position: 0 0, 30px 30px;
+  opacity: 0.12;
+  animation: floatHearts 18s linear infinite;
+}
+
+@keyframes floatHearts {
+  from { transform: translateY(0); }
+  to { transform: translateY(-300px); }
+}
+
+/* Screens */
+.screen {
+  display: none;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.5s ease;
+}
+.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95);}
+  to { opacity: 1; transform: scale(1);}
+}
+
+/* Envelope */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px white; }
+  50% { box-shadow: 0 0 35px white; }
+  100% { box-shadow: 0 0 10px white; }
+}
+
+.envelope {
+  width: 230px;
+  height: 150px;
+  background: #d48a8a;
+  border-radius: 12px;
+  cursor: pointer;
+  animation: glow 2s infinite;
+  position: relative;
+  transition: transform 0.2s;
+}
+.envelope:active {
+  transform: scale(0.95);
+}
+
+/* Tear */
+.tear-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: white;
+  opacity: 0;
+}
+.t1 { top: 40%; }
+.t2 { top: 60%; }
+
+.tear {
+  animation: rip 0.4s forwards;
+}
+
+@keyframes rip {
+  from { transform: scaleX(0); opacity: 1; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+/* Button */
+button {
+  margin-top: 20px;
+  padding: 12px 22px;
+  border-radius: 25px;
+  border: none;
+  background: white;
+  font-size: 16px;
+  transition: 0.3s;
+}
+button:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 15px white;
+}
+
+/* Bouquet */
+.bouquet {
+  display: flex;
+  gap: 25px;
+}
+
+/* Lily */
+.lily {
+  width: 100px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.lily:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 15px white);
+}
+
+.zoom {
+  transform: scale(2);
+  transition: transform 0.4s ease;
+}
+
+/* Image */
+img {
+  max-width: 85%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
 </style>
 </head>
+
 <body>
 
-<!-- Start Screen -->
-<div id="start-screen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#ffc1d9,#ffe0ec,#fff2f8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;">
-  <h1 style="color:#ff4f91;font-size:28px;">💗 For My BSF 💗</h1>
-  <p style="color:#c7386b;font-size:18px;margin:10px 20px;">I made this for you... tap to begin 🤍</p>
-  <button id="start-btn" style="padding:12px 25px;font-size:18px;border-radius:30px;background:#ff8fb5;color:white;border:none;cursor:pointer;">Start 💞</button>
+<!-- SCREEN 1 -->
+<div class="screen active" id="screen1">
+  <h1>Open The  Envelope For Surprise</h1>
+  <div class="envelope" onclick="openEnvelope()">
+    <div class="tear-line t1" id="t1"></div>
+    <div class="tear-line t2" id="t2"></div>
+  </div>
 </div>
 
-<h1>💕 Special Mini Games For My BSF 💕</h1>
-<div class="container">
-  <div class="nav">
-    <button onclick="showGame('game1')">hehe simple heart game</button>
-    <button onclick="showGame('game2')">drawww</button>
-    <button onclick="showGame('game3')">emojiisssssss</button>
+<!-- SCREEN 2 -->
+<div class="screen" id="screen2">
+  <div>
+    EHEHEHEHEHEH HADD TOOO BBGGG, THANKKKKK YOUUU FOR SENDDINGGG ME THE CARDSSSSA & ONLINEEEE SITESSSSSSS TO THANKKK MEEEEEE. I REALLLLLLLLLLLYYYYYY LOVEEE YOURRRRRR EFFORTSSSS, & KAB TAK JUTH BOLEGI, ITS SO OBV THAT U LIKE ME ( NOT AS BSF 😝) EHEHEHEHE TYYY BBGGGGGGG VERYYYYY MUCHHHHHHH, BAS TERAA PHONE JLDII AYEEEE
   </div>
+  <button onclick="goToBouquet()">FOR YOUU 🫶🏻</button>
+</div>
 
-  <!-- GAME 1: Heart Tap -->
-  <div id="game1" class="game">
-    <h2>Heart Tap Challenge ❤️</h2>
-    <p>Click 20 hearts in 15 seconds to win!</p>
-    <button onclick="startHearts()">Start</button>
-    <p id="score">Score: 0</p>
-    <p id="timer">Time: 15</p>
-    <div id="heart-area"></div>
-  </div>
+<!-- SCREEN 3 -->
+<div class="screen" id="screen3">
+  <div class="bouquet">
 
-  <!-- GAME 2: Draw Flower Strict -->
-  <div id="game2" class="game">
-    <h2>Hint: Draw a flower inside the box 🌸</h2>
-    <div id="flower-box">
-      <canvas id="flowerCanvas" width="200" height="200"></canvas>
-    </div>
-    <p><button onclick="checkDrawing()">Submit</button></p>
-    <div id="message">EHEHE DM FOR SURPRISE</div>
-  </div>
+    <svg class="lily" onclick="lily1()" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="pinkGrad1">
+          <stop offset="0%" stop-color="#ff9ccf"/>
+          <stop offset="100%" stop-color="#ff4da6"/>
+        </radialGradient>
+      </defs>
+      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#pinkGrad1)"/>
+      <circle cx="50" cy="50" r="5" fill="yellow"/>
+    </svg>
 
-  <!-- GAME 3: Emoji Click -->
-  <div id="game3" class="game">
-    <h2>Emoji Click Challenge 😎</h2>
-    <p>Click the moving emoji 10 times to win!</p>
-    <button onclick="startEmoji()">Start</button>
-    <p id="emojiScore">Score: 0</p>
-    <div id="emojiArea"></div>
+    <svg class="lily" onclick="lily2()" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="redGrad1">
+          <stop offset="0%" stop-color="#ff7a7a"/>
+          <stop offset="100%" stop-color="#cc0000"/>
+        </radialGradient>
+      </defs>
+      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#redGrad1)"/>
+      <circle cx="50" cy="50" r="5" fill="yellow"/>
+    </svg>
+
+    <svg class="lily" onclick="lily3()" viewBox="0 0 100 100">
+      <defs>
+        <radialGradient id="blueGrad1">
+          <stop offset="0%" stop-color="#7ab6ff"/>
+          <stop offset="100%" stop-color="#0044cc"/>
+        </radialGradient>
+      </defs>
+      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#blueGrad1)"/>
+      <circle cx="50" cy="50" r="5" fill="yellow"/>
+    </svg>
+
   </div>
+</div>
+
+<!-- LILY 1 -->
+<div class="screen" id="lily1">
+  <svg class="lily zoom" viewBox="0 0 100 100">
+    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="pink"/>
+  </svg>
+  <p onclick="show('photoScreen')" style="cursor:pointer;">
+    CLICK TO SEE WHO IS THE MOST BEAUTIFUL 😝🫶🏻
+  </p>
+</div>
+
+<!-- PHOTO -->
+<div class="screen" id="photoScreen">
+  <img src="girl.jpg" loading="lazy" alt="photo">
+  <p>THERE YOU GO BBG</p>
+  <button onclick="backToBouquet()">BACK</button>
+</div>
+
+<!-- LILY 2 -->
+<div class="screen" id="lily2">
+  <svg class="lily zoom" viewBox="0 0 100 100">
+    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="red"/>
+  </svg>
+  <p>EHEHEH NO SUPRISE HEREEEE</p>
+  <button onclick="backToBouquet()">BACK</button>
+</div>
+
+<!-- LILY 3 -->
+<div class="screen" id="lily3">
+  <svg class="lily zoom" viewBox="0 0 100 100">
+    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="blue"/>
+  </svg>
+  <p>BBGGGG I LOB U VERYYYYYYYY MUCHHHHHHHH</p>
+  <button onclick="finalScreen()">Next</button>
+</div>
+
+<!-- FINAL -->
+<div class="screen" id="final">
+  <p>THANKKKKKK YOUUU BGGGGGG FOR YOUUURRRR EFFORTS LOB U🫶🏻🫶🏻</p>
 </div>
 
 <script>
-// START BUTTON
-document.getElementById('start-btn').addEventListener('click',()=>{
-  document.getElementById('start-screen').style.display='none';
-});
+let clicks = 0;
 
-// NAVIGATION
-function showGame(id){
-  document.querySelectorAll('.game').forEach(g=>g.style.display='none');
-  document.getElementById(id).style.display='block';
+function openEnvelope() {
+  if (clicks >= 3) return;
+  clicks++;
+
+  if (clicks === 1) document.getElementById("t1").classList.add("tear");
+  if (clicks === 2) document.getElementById("t2").classList.add("tear");
+  if (clicks === 3) setTimeout(()=>show("screen2"),400);
 }
 
-// GAME 1: Heart Tap
-let heartScore=0, heartTimer, heartActive=false;
-function startHearts(){
-  heartScore=0; heartActive=true;
-  document.getElementById('score').innerText='Score: 0';
-  const area=document.getElementById('heart-area');
-  area.innerHTML='';
-  let time=15;
-  document.getElementById('timer').innerText='Time: 15';
-  heartTimer=setInterval(()=>{
-    time--;
-    document.getElementById('timer').innerText='Time: '+time;
-    if(time<=0){clearInterval(heartTimer); alert('Time over!'); area.innerHTML=''; heartActive=false;}
-  },1000);
-  spawnHeart();
-}
-function spawnHeart(){
-  if(!heartActive) return;
-  const area=document.getElementById('heart-area');
-  area.innerHTML=''; // Only one heart at a time
-  const heart=document.createElement('div');
-  heart.classList.add('heart');
-  heart.innerText='❤️';
-  heart.style.top=Math.random()*(area.offsetHeight-30)+'px';
-  heart.style.left=Math.random()*(area.offsetWidth-30)+'px';
-  area.appendChild(heart);
-  heart.addEventListener('click',()=>{
-    heartScore++;
-    document.getElementById('score').innerText='Score: '+heartScore;
-    if(heartScore<20) spawnHeart();
-    else{clearInterval(heartTimer); alert('You won! ❤️'); area.innerHTML=''; heartActive=false;}
-  });
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
-// GAME 2: Draw Flower Strict
-const canvas=document.getElementById('flowerCanvas');
-const ctx=canvas.getContext('2d');
-let drawing=false;
-canvas.addEventListener('pointerdown',()=>drawing=true);
-canvas.addEventListener('pointerup',()=>drawing=false);
-canvas.addEventListener('pointermove',draw);
-function draw(e){
-  if(!drawing) return;
-  const rect=canvas.getBoundingClientRect();
-  const x=e.clientX-rect.left;
-  const y=e.clientY-rect.top;
-  ctx.fillStyle='pink';
-  ctx.beginPath();
-  ctx.arc(x,y,5,0,Math.PI*2);
-  ctx.fill();
-}
-
-// Define flower zones (center + petals)
-const zones=[
-  {x:100,y:100,r:20,count:0,min:10}, // center
-  {x:60,y:60,r:15,count:0,min:10},   // petal1
-  {x:140,y:60,r:15,count:0,min:10},  // petal2
-  {x:60,y:140,r:15,count:0,min:10},  // petal3
-  {x:140,y:140,r:15,count:0,min:10}, // petal4
-  {x:100,y:40,r:12,count:0,min:10}   // petal5 top
-];
-
-function checkDrawing(){
-  const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
-  // Reset counts
-  zones.forEach(z=>z.count=0);
-  for(let y=0;y<canvas.height;y++){
-    for(let x=0;x<canvas.width;x++){
-      const i=(y*canvas.width+x)*4;
-      const r=imgData.data[i],g=imgData.data[i+1],b=imgData.data[i+2];
-      if(r!==255 || g!==255 || b!==255){
-        zones.forEach(z=>{
-          const dx=x-z.x, dy=y-z.y;
-          if(dx*dx+dy*dy<=z.r*z.r) z.count++;
-        });
-      }
-    }
-  }
-  const allPassed=zones.every(z=>z.count>=z.min);
-  if(allPassed){
-    document.getElementById('message').style.display='block';
-    for(let i=0;i<10;i++){
-      const h=document.createElement('div');
-      h.classList.add('floating-heart');
-      h.style.left=(50+Math.random()*150)+'px';
-      h.style.top=(50+Math.random()*150)+'px';
-      h.innerText='❤️';
-      document.getElementById('game2').appendChild(h);
-      setTimeout(()=>h.remove(),2000);
-    }
-  } else alert('Draw a flower covering all zones!');
-}
-
-// GAME 3: EMOJI CLICK
-let emojiScore=0, emojiInterval;
-function startEmoji(){
-  emojiScore=0; document.getElementById('emojiScore').innerText='Score: 0';
-  const area=document.getElementById('emojiArea');
-  area.innerHTML='';
-  const emoji=document.createElement('div');
-  emoji.innerText='😎'; emoji.style.position='absolute'; emoji.style.fontSize='40px';
-  area.appendChild(emoji);
-  emoji.addEventListener('click',()=>{
-    emojiScore++; document.getElementById('emojiScore').innerText='Score: '+emojiScore;
-    if(emojiScore>=10){clearInterval(emojiInterval); alert('You won! 😎'); area.innerHTML='';}
-  });
-  emojiInterval=setInterval(()=>{
-    emoji.style.top=Math.random()*(area.offsetHeight-40)+'px';
-    emoji.style.left=Math.random()*(area.offsetWidth-40)+'px';
-  },600);
-}
+function goToBouquet(){ show("screen3"); }
+function lily1(){ show("lily1"); }
+function lily2(){ show("lily2"); }
+function lily3(){ show("lily3"); }
+function finalScreen(){ show("final"); }
+function backToBouquet(){ show("screen3"); }
 </script>
+
 </body>
-</html>
+  </html>
