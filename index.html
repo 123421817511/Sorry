@@ -3,143 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
+* {
   margin: 0;
-  background: #e29c9c;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
-  overflow: hidden;
-  touch-action: manipulation;
-  overscroll-behavior: none;
 }
 
-/* iOS style hearts */
+body {
+  background: #e29c9c;
+  overflow: hidden;
+}
+
+/* 💖 BACKGROUND HEARTS */
 body::before {
   content: "";
   position: fixed;
-  width: 200%;
-  height: 200%;
+  width: 100%;
+  height: 100%;
   background-image:
     url('https://em-content.zobj.net/source/apple/391/red-heart_2764-fe0f.png'),
-    url('https://em-content.zobj.net/source/apple/391/heart-hands-light-skin-tone_1faf6-1f3fb.png');
-  background-size: 60px 60px;
+    url('https://em-content.zobj.net/source/apple/391/sparkling-heart_1f496.png');
+  background-size: 60px;
   background-repeat: repeat;
-  background-position: 0 0, 30px 30px;
-  opacity: 0.12;
-  animation: floatHearts 18s linear infinite;
+  opacity: 0.1;
+  animation: floatHearts 20s linear infinite;
+  z-index: -1;
+  pointer-events: none;
 }
 
 @keyframes floatHearts {
   from { transform: translateY(0); }
-  to { transform: translateY(-300px); }
+  to { transform: translateY(-200px); }
 }
 
-/* Screens */
+/* SCREENS */
 .screen {
   display: none;
   height: 100vh;
-  width: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
   padding: 20px;
-  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.active {
+  display: flex;
   animation: fadeIn 0.5s ease;
 }
-.active { display: flex; }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95);}
-  to { opacity: 1; transform: scale(1);}
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
 }
 
-/* Envelope */
-@keyframes glow {
-  0% { box-shadow: 0 0 10px white; }
-  50% { box-shadow: 0 0 35px white; }
-  100% { box-shadow: 0 0 10px white; }
+/* HEADING */
+h1 {
+  font-size: 22px;
+  margin-bottom: 20px;
 }
 
+/* ENVELOPE */
 .envelope {
-  width: 230px;
+  width: 220px;
   height: 150px;
-  background: #d48a8a;
-  border-radius: 12px;
-  cursor: pointer;
-  animation: glow 2s infinite;
+  background: #d88c8c;
   position: relative;
-  transition: transform 0.2s;
-}
-.envelope:active {
-  transform: scale(0.95);
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 5;
 }
 
-/* Tear */
-.tear-line {
+.flap {
   position: absolute;
   width: 100%;
-  height: 2px;
-  background: white;
-  opacity: 0;
-}
-.t1 { top: 40%; }
-.t2 { top: 60%; }
-
-.tear {
-  animation: rip 0.4s forwards;
+  height: 100%;
+  background: #c97c7c;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  transition: 0.6s;
 }
 
-@keyframes rip {
-  from { transform: scaleX(0); opacity: 1; }
-  to { transform: scaleX(1); opacity: 1; }
+.envelope.opened .flap {
+  transform: rotateX(180deg);
 }
 
-/* Button */
+/* FIXED CLICK ISSUE */
+.envelope * {
+  pointer-events: none;
+}
+
+/* BUTTON */
 button {
   margin-top: 20px;
-  padding: 12px 22px;
-  border-radius: 25px;
+  padding: 12px 20px;
   border: none;
   background: white;
-  font-size: 16px;
-  transition: 0.3s;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+  position: relative;
 }
+
 button:active {
   transform: scale(0.9);
   box-shadow: 0 0 15px white;
 }
 
-/* Bouquet */
-.bouquet {
-  display: flex;
-  gap: 25px;
-}
-
-/* Lily */
+/* LILY */
 .lily {
-  width: 100px;
+  width: 120px;
+  height: 120px;
+  margin: 10px;
   cursor: pointer;
-  transition: 0.4s;
-}
-.lily:hover {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 15px white);
+  filter: drop-shadow(0 0 10px white);
 }
 
+/* ZOOM */
 .zoom {
-  transform: scale(2);
-  transition: transform 0.4s ease;
+  animation: zoomIn 0.4s ease;
 }
 
-/* Image */
+@keyframes zoomIn {
+  from { transform: scale(0.5);}
+  to { transform: scale(1);}
+}
+
+/* IMAGE */
 img {
-  max-width: 85%;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  max-width: 90%;
+  border-radius: 15px;
 }
 </style>
 </head>
@@ -147,95 +148,71 @@ img {
 <body>
 
 <!-- SCREEN 1 -->
-<div class="screen active" id="screen1">
-  <h1>Open The  Envelope For Surprise</h1>
-  <div class="envelope" onclick="openEnvelope()">
-    <div class="tear-line t1" id="t1"></div>
-    <div class="tear-line t2" id="t2"></div>
-  </div>
-</div>
+<div class="screen active" id="home">
+  <h1>Open The Envelope For Surprise</h1>
 
-<!-- SCREEN 2 -->
-<div class="screen" id="screen2">
-  <div>
+  <div class="envelope" onclick="openEnvelope(this)">
+    <div class="flap"></div>
+  </div>
+
+  <p id="msg" style="display:none; margin-top:20px;">
     EHEHEHEHEHEH HADD TOOO BBGGG, THANKKKKK YOUUU FOR SENDDINGGG ME THE CARDSSSSA & ONLINEEEE SITESSSSSSS TO THANKKK MEEEEEE. I REALLLLLLLLLLLYYYYYY LOVEEE YOURRRRRR EFFORTSSSS, & KAB TAK JUTH BOLEGI, ITS SO OBV THAT U LIKE ME ( NOT AS BSF 😝) EHEHEHEHE TYYY BBGGGGGGG VERYYYYY MUCHHHHHHH, BAS TERAA PHONE JLDII AYEEEE
-  </div>
-  <button onclick="goToBouquet()">FOR YOUU 🫶🏻</button>
+  </p>
+
+  <button id="nextBtn" onclick="show('bouquet')" style="display:none;">
+    FOR YOUU 🫶🏻
+  </button>
 </div>
 
-<!-- SCREEN 3 -->
-<div class="screen" id="screen3">
-  <div class="bouquet">
+<!-- BOUQUET -->
+<div class="screen" id="bouquet">
 
-    <svg class="lily" onclick="lily1()" viewBox="0 0 100 100">
-      <defs>
-        <radialGradient id="pinkGrad1">
-          <stop offset="0%" stop-color="#ff9ccf"/>
-          <stop offset="100%" stop-color="#ff4da6"/>
-        </radialGradient>
-      </defs>
-      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#pinkGrad1)"/>
-      <circle cx="50" cy="50" r="5" fill="yellow"/>
-    </svg>
+  <svg class="lily" viewBox="0 0 100 100" onclick="show('lily1')">
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="pink"/>
+  </svg>
 
-    <svg class="lily" onclick="lily2()" viewBox="0 0 100 100">
-      <defs>
-        <radialGradient id="redGrad1">
-          <stop offset="0%" stop-color="#ff7a7a"/>
-          <stop offset="100%" stop-color="#cc0000"/>
-        </radialGradient>
-      </defs>
-      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#redGrad1)"/>
-      <circle cx="50" cy="50" r="5" fill="yellow"/>
-    </svg>
+  <svg class="lily" viewBox="0 0 100 100" onclick="show('lily2')">
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="red"/>
+  </svg>
 
-    <svg class="lily" onclick="lily3()" viewBox="0 0 100 100">
-      <defs>
-        <radialGradient id="blueGrad1">
-          <stop offset="0%" stop-color="#7ab6ff"/>
-          <stop offset="100%" stop-color="#0044cc"/>
-        </radialGradient>
-      </defs>
-      <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="url(#blueGrad1)"/>
-      <circle cx="50" cy="50" r="5" fill="yellow"/>
-    </svg>
+  <svg class="lily" viewBox="0 0 100 100" onclick="show('lily3')">
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="blue"/>
+  </svg>
 
-  </div>
 </div>
 
 <!-- LILY 1 -->
 <div class="screen" id="lily1">
   <svg class="lily zoom" viewBox="0 0 100 100">
-    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="pink"/>
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="pink"/>
   </svg>
-  <p onclick="show('photoScreen')" style="cursor:pointer;">
-    CLICK TO SEE WHO IS THE MOST BEAUTIFUL 😝🫶🏻
-  </p>
+  <p>CLICK TO SEE WHO IS THE MOST BEAUTIFUL 😝🫶🏻</p>
+  <button onclick="show('photo')">Tap Here</button>
 </div>
 
 <!-- PHOTO -->
-<div class="screen" id="photoScreen">
-  <img src="girl.jpg" loading="lazy" alt="photo">
+<div class="screen" id="photo">
+  <img src="girl.jpg" loading="lazy">
   <p>THERE YOU GO BBG</p>
-  <button onclick="backToBouquet()">BACK</button>
+  <button onclick="show('bouquet')">BACK</button>
 </div>
 
 <!-- LILY 2 -->
 <div class="screen" id="lily2">
   <svg class="lily zoom" viewBox="0 0 100 100">
-    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="red"/>
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="red"/>
   </svg>
   <p>EHEHEH NO SUPRISE HEREEEE</p>
-  <button onclick="backToBouquet()">BACK</button>
+  <button onclick="show('bouquet')">BACK</button>
 </div>
 
 <!-- LILY 3 -->
 <div class="screen" id="lily3">
   <svg class="lily zoom" viewBox="0 0 100 100">
-    <path d="M50 10 L65 40 L90 30 L65 60 L50 50 L35 60 L10 30 L35 40 Z" fill="blue"/>
+    <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="blue"/>
   </svg>
   <p>BBGGGG I LOB U VERYYYYYYYY MUCHHHHHHHH</p>
-  <button onclick="finalScreen()">Next</button>
+  <button onclick="show('final')">Next</button>
 </div>
 
 <!-- FINAL -->
@@ -246,26 +223,19 @@ img {
 <script>
 let clicks = 0;
 
-function openEnvelope() {
-  if (clicks >= 3) return;
+function openEnvelope(el) {
   clicks++;
-
-  if (clicks === 1) document.getElementById("t1").classList.add("tear");
-  if (clicks === 2) document.getElementById("t2").classList.add("tear");
-  if (clicks === 3) setTimeout(()=>show("screen2"),400);
+  if (clicks === 3) {
+    el.classList.add("opened");
+    document.getElementById("msg").style.display = "block";
+    document.getElementById("nextBtn").style.display = "inline-block";
+  }
 }
 
-function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
-
-function goToBouquet(){ show("screen3"); }
-function lily1(){ show("lily1"); }
-function lily2(){ show("lily2"); }
-function lily3(){ show("lily3"); }
-function finalScreen(){ show("final"); }
-function backToBouquet(){ show("screen3"); }
 </script>
 
 </body>
