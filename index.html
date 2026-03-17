@@ -80,6 +80,7 @@ h1 {
   border-radius: 10px;
   cursor: pointer;
   z-index: 5;
+  animation: pulse 2s infinite;
 }
 
 .flap {
@@ -107,7 +108,8 @@ button {
   cursor: pointer;
   z-index: 10;
   position: relative;
-  pointer-events: auto; /* ensure clickable */
+  pointer-events: auto;
+  animation: glow 2s infinite alternate;
 }
 
 button:active {
@@ -115,13 +117,34 @@ button:active {
   box-shadow: 0 0 15px white;
 }
 
-/* LILY */
+/* BUTTON & ENVELOPE GLOW ANIMATIONS */
+@keyframes glow {
+  0% { box-shadow: 0 0 5px #fff; }
+  50% { box-shadow: 0 0 15px #fff; }
+  100% { box-shadow: 0 0 5px #fff; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+  50% { transform: scale(1.05); box-shadow: 0 0 25px #fff; }
+  100% { transform: scale(1); box-shadow: 0 0 10px #fff; }
+}
+
+/* LILY GRADIENT */
 .lily {
   width: 120px;
   height: 120px;
   margin: 10px;
   cursor: pointer;
   filter: drop-shadow(0 0 10px white);
+}
+
+.lily path {
+  transition: 0.5s;
+}
+
+.lily:hover path {
+  fill: url(#grad);
 }
 
 /* ZOOM */
@@ -139,6 +162,27 @@ img {
   max-width: 90%;
   border-radius: 15px;
 }
+
+/* CONFETTI PARTICLES */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  top: 0;
+  pointer-events: none;
+  z-index: 20;
+  opacity: 0.8;
+  border-radius: 50%;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
@@ -153,7 +197,7 @@ img {
   </div>
 
   <p id="msg" style="display:none; margin-top:20px;">
-    EHEHEHEHEHEH HADD TOOO BBGGG, THANKKKKK YOUUU FOR SENDDINGGG ME THE CARDSSSS & ONLINEEEE SITESSSSSSS TO THANKKK MEEEEEE. I REALLLLLLLLLLLYYYYYY LOVEEE YOURRRRRR EFFORTSSSS, & KAB TAK JUTH BOLEGI, ITS SO OBV THAT U LIKE ME ( NOT AS BSF 😝) EHEHEHEHE TYYY BBGGGGGGG VERYYYYY MUCHHHHHHH, BAS TERAA PHONE JLDII AYEEEE
+    EHEHEHEHEHEH HADD TOOO BBGGG, THANKKKKK YOUUU FOR SENDDINGGG ME THE CARDSSSSA & ONLINEEEE SITESSSSSSS TO THANKKK MEEEEEE. I REALLLLLLLLLLLYYYYYY LOVEEE YOURRRRRR EFFORTSSSS, & KAB TAK JUTH BOLEGI, ITS SO OBV THAT U LIKE ME ( NOT AS BSF 😝) EHEHEHEHE TYYY BBGGGGGGG VERYYYYY MUCHHHHHHH, BAS TERAA PHONE JLDII AYEEEE
   </p>
 
   <button id="nextBtn" onclick="show('bouquet')" style="display:none;">
@@ -165,14 +209,32 @@ img {
 <div class="screen" id="bouquet">
 
   <svg class="lily" viewBox="0 0 100 100" onclick="show('lily1')">
+    <defs>
+      <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="pink"/>
+        <stop offset="100%" stop-color="hotpink"/>
+      </linearGradient>
+    </defs>
     <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="pink"/>
   </svg>
 
   <svg class="lily" viewBox="0 0 100 100" onclick="show('lily2')">
+    <defs>
+      <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="red"/>
+        <stop offset="100%" stop-color="darkred"/>
+      </linearGradient>
+    </defs>
     <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="red"/>
   </svg>
 
   <svg class="lily" viewBox="0 0 100 100" onclick="show('lily3')">
+    <defs>
+      <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="blue"/>
+        <stop offset="100%" stop-color="deepskyblue"/>
+      </linearGradient>
+    </defs>
     <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="blue"/>
   </svg>
 
@@ -184,7 +246,8 @@ img {
     <path d="M50 10 L70 40 L90 30 L65 60 L50 50 L35 60 L10 30 L30 40 Z" fill="pink"/>
   </svg>
   <p>CLICK TO SEE WHO IS THE MOST BEAUTIFUL 😝🫶🏻</p>
-  <button onclick="show('photo')">Tap Here</button>
+  <button onclick="show('photo'); triggerConfetti()">Tap Here</button>
+  <button onclick="show('bouquet')">BACK</button>
 </div>
 
 <!-- PHOTO -->
@@ -226,12 +289,26 @@ function openEnvelope(el) {
     el.classList.add("opened");
     document.getElementById("msg").style.display = "block";
     document.getElementById("nextBtn").style.display = "inline-block";
+    triggerConfetti();
   }
 }
 
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+}
+
+/* CONFETTI GENERATOR */
+function triggerConfetti() {
+  for (let i = 0; i < 100; i++) {
+    let conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.style.left = Math.random() * window.innerWidth + 'px';
+    conf.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 70%)`;
+    conf.style.animationDuration = (2 + Math.random()*3) + 's';
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 5000);
+  }
 }
 </script>
 
