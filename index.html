@@ -89,15 +89,11 @@ h1 {
   background: #c97c7c;
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transition: 0.6s;
+  pointer-events: none; /* Only flap ignores clicks */
 }
 
 .envelope.opened .flap {
   transform: rotateX(180deg);
-}
-
-/* FIXED CLICK ISSUE */
-.envelope * {
-  pointer-events: none;
 }
 
 /* BUTTON */
@@ -111,6 +107,7 @@ button {
   cursor: pointer;
   z-index: 10;
   position: relative;
+  pointer-events: auto; /* ensure clickable */
 }
 
 button:active {
@@ -239,4 +236,4 @@ function show(id) {
 </script>
 
 </body>
-  </html>
+</html>
